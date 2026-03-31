@@ -1,143 +1,105 @@
-import { ArrowUpRight, Github } from "lucide-react";
-import { AnimatedBorderButton } from "@/components/AnimatedBorderButton";
+import { ArrowUpRight, Lock, Eye } from "lucide-react";
+
 const projects = [
   {
-    title: "Fintech Dashboard",
+    title: "Digital Quality Scrap Management",
+    category: "Enterprise Project (Yazaki)",
     description:
-      "A comprehensive financial analytics platform with real-time data visualization, portfolio management, and AI-powered insights.",
-    image: "/projects/project1.png",
-    tags: ["React", "Typescript", "NodeJS"],
-    link: "#",
-    github: "#",
+      "Automated the tracking of manufacturing defects and scrap data. This system replaced manual paper-based logs, reducing data entry errors by 40% and providing real-time quality analytics for production managers.",
+    image: "/phd.avif", 
+    tags: ["React.js", "Laravel", "Industrial IoT", "MySQL"],
+    status: "Private Code",
   },
   {
-    title: "E-Commerce Platform",
+    title: "ECO-STORE",
+    category: "Full Stack E-Commerce",
     description:
-      "A full-featured e-commerce solution with inventory management, payment processing, and analytics dashboard.",
-    image: "/projects/project2.png",
-    tags: ["Next.js", "Stripe", "PostgreSQL", "Tailwind"],
-    link: "#",
-    github: "#",
+      "A custom-built e-commerce solution featuring a dynamic product catalog, secure user authentication, and a robust shopping cart system. Integrated with a custom dashboard for inventory and order management.",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=800", // Image nqiya dyal store
+    tags: ["React.js", "Laravel", "MySQL", "REST API"],
+    status: "Private Repo",
   },
   {
-    title: "AI Writing Assistant",
+    title: "Legal Case Tracking System",
+    category: "Public Sector (Court of Appeal)",
     description:
-      "An intelligent writing tool powered by GPT-4, helping users create better content faster.",
-    image: "/projects/project3.png",
-    tags: ["React", "OpenAI", "Python", "FastAPI"],
-    link: "#",
-    github: "#",
+      "Developed a secure web portal for tracking legal proceedings. Designed to manage sensitive case files and hearing schedules, improving coordination between administrative departments.",
+    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800", // Tswira Abstract dyal Legal Case
+    tags: ["PHP", "SQL", "Security", "Case Management"],
+    status: "Confidential",
   },
   {
-    title: "Project Management Tool",
+    title: "Hopital Molière Longchamp - Equipment Management",
+    category: "Full Stack Medical SaaS",
     description:
-      "A collaborative workspace for teams with real-time updates, task tracking, and integrations.",
-    image: "/projects/project4.png",
-    tags: ["Next.js", "Socket.io", "MongoDB", "Redis"],
-    link: "#",
-    github: "#",
+      "A comprehensive digital platform for the efficient management of medical equipment. Features role-based dashboards for Engineers, Doctors, and Technicians to handle maintenance requests, generate receiving reports (PV), and perform checklist inspections.",
+    image: "/public/home.png", // Ghadi tqad mockup frames wsstha tsawer dyalk w tsmmiha hakka f public/projects/
+    tags: ["React.js", "PHP/Laravel", "MySQL", "UI/UX Design", "Medical IT"],
+    link: "#", // Ila kant 3ndk chi demo link 7ettou hna
+    github: "https://github.com/mouhssine-idbella", // Khli link l'profile dyalk
+    status: "Case Study",
   },
 ];
 
 export const Projects = () => {
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
-      {/* Bg glows */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-highlight/5 rounded-full blur-3xl" />
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
         <div className="text-center mx-auto max-w-3xl mb-16">
-          <span className="text-secondary-foreground text-sm font-medium tracking-wider uppercase animate-fade-in">
-            Featured Work
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6 animate-fade-in animation-delay-100 text-secondary-foreground">
-            Projects that
-            <span className="font-serif italic font-normal text-white">
-              {" "}
-              make an impact.
-            </span>
+          <span className="text-primary text-sm font-medium tracking-wider uppercase">Portfolio</span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6 text-white">
+            Practical <span className="font-serif italic font-normal text-primary text-white">Experience.</span>
           </h2>
-          <p className="text-muted-foreground animate-fade-in animation-delay-200">
-            A selection of my recent work, from complex web applications to
-            innovative tools that solve real-world problems.
+          <p className="text-muted-foreground italic">
+            Note: Some enterprise projects are under non-disclosure agreements (NDA); 
+            source code is private to protect company data.
           </p>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-10">
           {projects.map((project, idx) => (
-            <div
-              key={idx}
-              className="group glass rounded-2xl overflow-hidden animate-fade-in md:row-span-1"
-              style={{ animationDelay: `${(idx + 1) * 100}ms` }}
-            >
-              {/* Image */}
-              <div className="relative overflow-hidden aspect-video">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div
-                  className="absolute inset-0 
-                bg-gradient-to-t from-card via-card/50
-                 to-transparent opacity-60"
-                />
-                {/* Overlay Links */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a
-                    href={project.link}
-                    className="p-3 rounded-full glass hover:bg-primary hover:text-primary-foreground transition-all"
-                  >
-                    <ArrowUpRight className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={project.github}
-                    className="p-3 rounded-full glass hover:bg-primary hover:text-primary-foreground transition-all"
-                  >
-                    <Github className="w-5 h-5" />
-                  </a>
+            <div key={idx} className="group glass rounded-3xl overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500">
+              <div className="relative aspect-video overflow-hidden">
+                <img src={project.image} alt={project.title} className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+                <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-[10px] text-white font-semibold uppercase tracking-widest">
+                  {project.status}
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-6 space-y-4">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                  <ArrowUpRight
-                    className="w-5 h-5 
-                  text-muted-foreground group-hover:text-primary
-                   group-hover:translate-x-1 
-                   group-hover:-translate-y-1 transition-all"
-                  />
-                </div>
-                <p className="text-muted-foreground text-sm">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, tagIdx) => (
-                    <span
-                      key={tagIdx}
-                      className="px-4 py-1.5 rounded-full bg-surface text-xs font-medium border border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary transition-all duration-300"
-                    >
+              <div className="p-8">
+                <p className="text-primary text-xs font-bold mb-2 uppercase tracking-widest">{project.category}</p>
+                <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">{project.description}</p>
+                
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {project.tags.map((tag, tIdx) => (
+                    <span key={tIdx} className="text-[10px] px-3 py-1 bg-white/5 rounded-md border border-white/5 text-muted-foreground uppercase font-bold">
                       {tag}
                     </span>
                   ))}
                 </div>
+
+                <div className="flex gap-4">
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold text-white hover:text-primary transition-colors">
+                      <Eye className="w-4 h-4" /> LIVE PREVIEW
+                    </a>
+                  )}
+                  {project.status === "Private Code" || project.status === "Confidential" ? (
+                    <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground/50 cursor-not-allowed">
+                      <Lock className="w-4 h-4" /> PRIVATE REPO
+                    </span>
+                  ) : (
+                    project.github && (
+                      <a href={project.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold text-white hover:text-primary transition-colors">
+                        <ArrowUpRight className="w-4 h-4" /> GITHUB
+                      </a>
+                    )
+                  )}
+                </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* View All CTA */}
-        <div className="text-center mt-12 animate-fade-in animation-delay-500">
-          <AnimatedBorderButton>
-            View All Projects
-            <ArrowUpRight className="w-5 h-5" />
-          </AnimatedBorderButton>
         </div>
       </div>
     </section>

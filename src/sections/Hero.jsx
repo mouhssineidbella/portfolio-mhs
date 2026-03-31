@@ -10,24 +10,16 @@ import {
 import { AnimatedBorderButton } from "../components/AnimatedBorderButton";
 
 const skills = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "GraphQL",
-  "PostgreSQL",
-  "MongoDB",
-  "Redis",
-  "Docker",
-  "AWS",
-  "Vercel",
+  "React.js",
+  "Laravel",
+  "JavaScript",
+  "PHP",
   "Tailwind CSS",
-  "Prisma",
-  "Jest",
-  "Cypress",
-  "Figma",
+  "MySQL",
+  "SQL",
   "Git",
-  "GitHub Actions",
+  "GitHub",
+  "Agile",
 ];
 
 export const Hero = () => {
@@ -47,6 +39,7 @@ export const Hero = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(30)].map((_, i) => (
           <div
+            key={i}
             className="absolute w-1.5 h-1.5 rounded-full opacity-60"
             style={{
               backgroundColor: "#20B2A6",
@@ -69,7 +62,7 @@ export const Hero = () => {
             <div className="animate-fade-in">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-primary">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                Software Engineer • React Specialist
+                Full Stack Developer • React & Laravel
               </span>
             </div>
 
@@ -85,34 +78,39 @@ export const Hero = () => {
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg animate-fade-in animation-delay-200">
-                Hi, I'm Pedro Machado — a software engineer specializing in
-                React, Next.js, and TypeScript. I build scalable, performant web
-                applications that users love.
+                Hi, I'm Mouhssine Id-bella — a Full Stack Developer specializing in
+                React.js and Laravel. I build scalable, performant web applications 
+                that solve real-world problems.
               </p>
             </div>
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-4 animate-fade-in animation-delay-300">
-              <Button size="lg">
-                Contact Me <ArrowRight className="w-5 h-5" />
-              </Button>
-              <AnimatedBorderButton>
-                <Download className="w-5 h-5" />
-                Download CV
-              </AnimatedBorderButton>
+              <a href="#contact" className="inline-block">
+                <Button size="lg">
+                  Contact Me <ArrowRight className="w-5 h-5" />
+                </Button>
+              </a>
+              <a href="/CV.pdf" download="CV_Mouhssine_Idbella.pdf" className="inline-block">
+                <AnimatedBorderButton>
+                  <Download className="w-5 h-5" />
+                  Download CV
+                </AnimatedBorderButton>
+              </a>
             </div>
 
             {/* Social Links */}
             <div className="flex items-center gap-4 animate-fade-in animation-delay-400">
               <span className="text-sm text-muted-foreground">Follow me: </span>
               {[
-                { icon: Github, href: "#" },
-                { icon: Linkedin, href: "#" },
-                { icon: Twitter, href: "#" },
+                { icon: Github, href: "https://github.com/mouhssine-idbella" },
+                { icon: Linkedin, href: "https://www.linkedin.com/in/idbella-mouhssine/" },
               ].map((social, idx) => (
                 <a
                   key={idx}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all duration-300"
                 >
                   {<social.icon className="w-5 h-5" />}
@@ -132,8 +130,8 @@ export const Hero = () => {
               />
               <div className="relative glass rounded-3xl p-2 glow-border">
                 <img
-                  src="/profile-photo.jpg"
-                  alt="Pedro Machado"
+                  src="/mhs.jpeg"
+                  alt="Mouhssine Id-bella"
                   className="w-full aspect-[4/5] object-cover rounded-2xl"
                 />
 
@@ -148,9 +146,9 @@ export const Hero = () => {
                 </div>
                 {/* Stats Badge */}
                 <div className="absolute -top-4 -left-4 glass rounded-xl px-4 py-3 animate-float animation-delay-500">
-                  <div className="text-2xl font-bold text-primary">5+</div>
+                  <div className="text-2xl font-bold text-primary">10+</div>
                   <div className="text-xs text-muted-foreground">
-                    Years Exp.
+                    Projects
                   </div>
                 </div>
               </div>
@@ -158,26 +156,29 @@ export const Hero = () => {
           </div>
         </div>
 
-        {/* Skills Section */}
+        {/* Skills Section (Mbedla hna) */}
         <div className="mt-20 animate-fade-in animation-delay-600">
-          <p className="text-sm text-muted-foreground mb-6 text-center">
+          <p className="text-xs text-muted-foreground/80 mb-8 text-center uppercase tracking-[0.2em] font-semibold">
             Technologies I work with
           </p>
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden flex">
             <div
               className="absolute left-0 top-0 bottom-0 w-32
-             bg-gradient-to-r from-background to-transparent z-10"
+             bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"
             />
             <div
               className="absolute right-0 top-0 bottom-0 w-32
-             bg-gradient-to-l from-background to-transparent z-10"
+             bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"
             />
-            <div className="flex animate-marquee">
-              {[...skills, ...skills].map((skill, idx) => (
-                <div key={idx} className="flex-shrink-0 px-8 py-4">
-                  <span className="text-xl font-semibold text-muted-foreground/50 hover:text-muted-foreground transition-colors">
-                    {skill}
-                  </span>
+            
+            <div className="flex animate-marquee gap-6 whitespace-nowrap py-4">
+              {[...skills, ...skills, ...skills].map((skill, idx) => (
+                <div key={idx} className="flex-shrink-0">
+                  <div className="flex items-center justify-center px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:border-[#20B2A6]/50 hover:bg-[#20B2A6]/10 transition-all duration-300 group cursor-default shadow-lg backdrop-blur-sm">
+                    <span className="text-base font-medium text-muted-foreground group-hover:text-[#20B2A6] transition-colors">
+                      {skill}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

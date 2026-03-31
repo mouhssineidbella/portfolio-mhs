@@ -3,26 +3,26 @@ import { Code2, Lightbulb, Rocket, Users } from "lucide-react";
 const highlights = [
   {
     icon: Code2,
-    title: "Clean Code",
+    title: "Full Stack Mastery",
     description:
-      "Writing maintainable, scalable code that stands the test of time.",
+      "Bridging the gap between robust Laravel backends and dynamic React frontends.",
   },
   {
     icon: Rocket,
-    title: "Performance",
+    title: "Problem Solver",
     description:
-      "Optimizing for speed and delivering lightning-fast user experiences.",
+      "Developing digital systems to optimize industrial and administrative workflows.",
   },
   {
     icon: Users,
-    title: "Collaboration",
-    description: "Working closely with teams to bring ideas to life.",
+    title: "Team Player",
+    description: "Collaborating effectively within professional and associative environments.",
   },
   {
     icon: Lightbulb,
-    title: "Innovation",
+    title: "Continuous Learning",
     description:
-      "Staying ahead with the latest technologies and best practices.",
+      "Staying curious and adapting quickly to new technologies and technical challenges.",
   },
 ];
 
@@ -34,61 +34,62 @@ export const About = () => {
           {/* Left Column */}
           <div className="space-y-8">
             <div className="animate-fade-in">
-              <span className="text-secondary-foreground text-sm font-medium tracking-wider uppercase">
+              <span className="text-primary text-sm font-medium tracking-wider uppercase">
                 About Me
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight animate-fade-in animation-delay-100 text-secondary-foreground">
-              Building the future,
-              <span className="font-serif italic font-normal text-white">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight animate-fade-in animation-delay-100 text-white">
+              Building solutions,
+              <span className="font-serif italic font-normal text-primary">
                 {" "}
-                one component at a time.
+                one line at a time.
               </span>
             </h2>
 
             <div className="space-y-4 text-muted-foreground animate-fade-in animation-delay-200">
               <p>
-                I'm a passionate software engineer with over 5 years of
-                experience crafting digital products that make a difference. My
-                journey started with a curiosity for how things work on the web,
-                and it has evolved into a deep expertise in modern frontend
-                technologies.
+                I'm Mouhssine Id-bella, a dedicated Full Stack Developer based in 
+                Guelmim, Morocco. My journey in digital development is fueled by 
+                a commitment to technical excellence and a drive to build tools 
+                that solve real-world problems.
               </p>
               <p>
-                I specialize in React, Next.js, and TypeScript, building
-                everything from sleek landing pages to complex enterprise
-                applications. My approach combines technical excellence with a
-                keen eye for design and user experience.
+                Currently, as a Full Stack Intern at <strong>Yazaki</strong>, I am 
+                architecting a <strong>Digital Quality Scrap Management System</strong> 
+                using React.js and Laravel. This project reflects my approach: 
+                combining clean code with functional design to improve operational 
+                efficiency.
               </p>
               <p>
-                When I'm not coding, you'll find me exploring new technologies,
-                contributing to open-source projects, or sharing knowledge with
-                the developer community.
+                With a background as a Specialized Technician in Digital Development, 
+                I focus on creating seamless user experiences and robust server-side 
+                logic. I thrive in environments that challenge me to learn and 
+                contribute to meaningful digital products.
               </p>
             </div>
 
             <div className="glass rounded-2xl p-6 glow-border animate-fade-in animation-delay-300">
               <p className="text-lg font-medium italic text-foreground">
-                "My mission is to create digital experiences that are not just
-                functional, but truly delightful — products that users love to
-                use and developers love to maintain."
+                "My mission is to transform complex challenges into simple, 
+                functional, and elegant digital experiences that bring 
+                tangible value to businesses."
               </p>
             </div>
           </div>
 
-          {/* Right Column - Hilights */}
+          {/* Right Column - Highlights */}
           <div className="grid sm:grid-cols-2 gap-6">
             {highlights.map((item, idx) => (
               <div
                 key={idx}
-                className="glass p-6 rounded-2xl animate-fade-in"
+                className="glass p-6 rounded-2xl animate-fade-in hover:bg-white/5 transition-colors duration-300 group"
                 style={{ animationDelay: `${(idx + 1) * 100}ms` }}
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 hover:bg-primary/20">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <item.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">
                   {item.description}
                 </p>
