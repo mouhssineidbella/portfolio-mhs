@@ -1,28 +1,39 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════
+   DESIGN SYSTEM TOKENS
+   Premium Dark / Data-Analytics theme
+   Primary: Teal · Accent: Power BI Gold · Purple
+═══════════════════════════════════════════════════ */
 @theme {
-  --color-background: #0f1418;
-  --color-foreground: #f0f2f5;
+  /* ─── Backgrounds ─── */
+  --color-background: #070c14;
+  --color-foreground: #e2e8f0;
+  --color-card:       #0d1525;
+  --color-surface:    #0d1525;
 
-  --color-card: #141a1f;
+  /* ─── Brand Teal ─── */
+  --color-primary:            #2dd4bf;
+  --color-primary-foreground: #030712;
 
-  --color-primary: #20b2a6;
-  --color-primary-foreground: #ffffff;
+  /* ─── Brand Accents ─── */
+  --color-highlight: #f2c811;   /* Power BI Gold   */
+  --color-gold:      #f2c811;
+  --color-purple:    #8b5cf6;   /* Power Apps Purple */
 
-  --color-secondary: #1f2830;
-  --color-secondary-foreground: #20b2a6;
-
-  --color-muted: #252e37;
-  --color-muted-foreground: #7a8491;
-
-  --color-border: #242b32;
+  /* ─── UI Scaffolding ─── */
+  --color-secondary:            #0f1e35;
+  --color-secondary-foreground: #2dd4bf;
+  --color-muted:                #182038;
+  --color-muted-foreground:     #64748b;
+  --color-border:               #1a2a42;
 
   --radius: 0.75rem;
-
-  --color-highlight: #f5a623;
-  --color-surface: #1a2329;
 }
 
+/* ═══════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════ */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -35,150 +46,233 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: "Inter", sans-serif;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    /* Dot-grid — the signature data-dashboard background texture */
+    background-image: radial-gradient(
+      rgba(45, 212, 191, 0.045) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+    background-attachment: fixed;
   }
 
   .font-serif {
     font-family: "Playfair Display", serif;
   }
+
+  ::selection {
+    background: rgba(45, 212, 191, 0.18);
+    color: #2dd4bf;
+  }
+
+  /* Smooth focus ring */
+  :focus-visible {
+    outline: 2px solid rgba(45, 212, 191, 0.6);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
+/* ═══════════════════════════════════════════════════
+   COMPONENTS
+═══════════════════════════════════════════════════ */
 @layer components {
+
+  /* ─── Glassmorphism surfaces ─── */
   .glass {
-    background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
-    backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+    background: rgba(13, 21, 37, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   .glass-strong {
-    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-    backdrop-filter: blur(24px);
-    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+    background: rgba(13, 21, 37, 0.88);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
   }
 
+  /* ─── Glow effects ─── */
   .glow-text {
-    text-shadow: 0 0 30px
-      color-mix(in srgb, var(--color-primary) 50%, transparent);
+    text-shadow: 0 0 40px rgba(45, 212, 191, 0.55);
   }
 
   .glow-border {
-    box-shadow: 0 0 20px
-        color-mix(in srgb, var(--color-primary) 20%, transparent),
-      inset 0 0 20px color-mix(in srgb, var(--color-primary) 5%, transparent);
+    box-shadow:
+      0 0 0 1px rgba(45, 212, 191, 0.14),
+      0 0 28px rgba(45, 212, 191, 0.07),
+      inset 0 0 28px rgba(45, 212, 191, 0.03);
+  }
+
+  /* ─── Card hover lift — premium, bouncy ─── */
+  .card-hover {
+    transition:
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-7px);
+    box-shadow:
+      0 28px 70px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(45, 212, 191, 0.24),
+      0 0 40px rgba(45, 212, 191, 0.08);
+  }
+
+  /* ─── Section label (e.g. "ABOUT ME") ─── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0.65;
+    border-radius: 9999px;
+  }
+
+  /* ─── Gradient text ─── */
+  .gradient-text {
+    background: linear-gradient(135deg, #2dd4bf 0%, #60a5fa 55%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-text {
+    background: linear-gradient(135deg, #f2c811 0%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Animated border button hover ─── */
+  .animated-border:hover {
+    background-color: rgba(45, 212, 191, 0.07);
+    box-shadow: 0 0 28px rgba(45, 212, 191, 0.15);
+  }
+
+  /* ─── Timeline glowing vertical track ─── */
+  .timeline-glow {
+    box-shadow:
+      0 0 16px rgba(45, 212, 191, 0.45),
+      0 0 50px rgba(45, 212, 191, 0.18);
+  }
+
+  /* ─── Stat / info chip ─── */
+  .stat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(45, 212, 191, 0.08);
+    border: 1px solid rgba(45, 212, 191, 0.2);
+    color: var(--color-primary);
   }
 }
 
+/* ═══════════════════════════════════════════════════
+   UTILITIES & KEYFRAMES
+═══════════════════════════════════════════════════ */
 @layer utilities {
+
+  /* ── Keyframes ── */
   @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
+    to   { opacity: 1; transform: translateY(0);     filter: blur(0);    }
   }
 
   @keyframes slow-drift {
-    0%,
-    100% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(20px, -30px);
-    }
-    50% {
-      transform: translate(-15px, -20px);
-    }
-    75% {
-      transform: translate(30px, 10px);
-    }
+    0%,  100% { transform: translate(0,    0);    }
+    25%        { transform: translate(20px, -30px); }
+    50%        { transform: translate(-15px,-20px); }
+    75%        { transform: translate(30px,  10px); }
   }
 
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+    0%, 100% { transform: translateY(0);     }
+    50%       { transform: translateY(-10px); }
   }
 
   @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+    0%   { transform: translateX(0);    }
+    100% { transform: translateX(-50%); }
   }
 
-  .animate-fade-in {
-    animation: fade-in 0.8s ease-out both;
+  /* Rotating gradient — used on profile image ring */
+  @keyframes gradient-rotate {
+    0%   { background-position:   0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position:   0% 50%; }
   }
 
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .animate-marquee {
-    animation: marquee 30s linear infinite;
-  }
-
-  .animation-delay-100 {
-    animation-delay: 100ms;
-  }
-
-  .animation-delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .animation-delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .animation-delay-400 {
-    animation-delay: 400ms;
-  }
-
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .animation-delay-600 {
-    animation-delay: 600ms;
-  }
-
-  .animation-delay-800 {
-    animation-delay: 800ms;
-  }
-
+  /* SVG animated border stroke */
   @keyframes animated-border {
-    0% {
-      stroke-dashoffset: 400;
-    }
-    100% {
-      stroke-dashoffset: -550;
-    }
+    0%   { stroke-dashoffset:  400; }
+    100% { stroke-dashoffset: -550; }
   }
 
+  /* ── Animation classes ── */
+  .animate-fade-in    { animation: fade-in 0.8s ease-out both; }
+  .animate-float      { animation: float   4s ease-in-out infinite; }
+  .animate-marquee    { animation: marquee 30s linear    infinite; }
+  .animate-gradient   {
+    background-size: 300% 300%;
+    animation: gradient-rotate 6s ease infinite;
+  }
+
+  /* ── Delay utilities ── */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-800 { animation-delay: 800ms; }
+
+  /* ── SVG border trigger on group hover ── */
   .group:hover .animated-border-path {
     animation: animated-border 1.5s linear infinite;
   }
 
-  .animated-border:hover {
-    background-color: color-mix(in srgb, #26c4b8 15%, transparent);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 0 20px color-mix(in srgb, #26c4b8 20%, transparent);
+  /* ── Scroll Reveal ── */
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(4px);
+    transition:
+      opacity   0.65s ease-out,
+      transform 0.65s ease-out,
+      filter    0.65s ease-out;
   }
 
-  .timeline-glow {
-    box-shadow: 0 0 40px
-        color-mix(in srgb, var(--color-primary) 35%, transparent),
-      0 0 80px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-hidden {
+      transition: none;
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
   }
 }

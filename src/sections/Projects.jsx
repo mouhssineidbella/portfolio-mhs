@@ -1,107 +1,205 @@
 import { ArrowUpRight, Lock, Eye } from "lucide-react";
-
-const projects = [
-  {
-    title: "Digital Quality Scrap Management",
-    category: "Enterprise Project (Yazaki)",
-    description:
-      "Automated the tracking of manufacturing defects and scrap data. This system replaced manual paper-based logs, reducing data entry errors by 40% and providing real-time quality analytics for production managers.",
-    image: "/phd.avif", 
-    tags: ["React.js", "Laravel", "Industrial IoT", "MySQL"],
-    status: "Private Code",
-  },
-  {
-    title: "ECO-STORE",
-    category: "Full Stack E-Commerce",
-    description:
-      "A custom-built e-commerce solution featuring a dynamic product catalog, secure user authentication, and a robust shopping cart system. Integrated with a custom dashboard for inventory and order management.",
-    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=800", // Image nqiya dyal store
-    tags: ["React.js", "Laravel", "MySQL", "REST API"],
-    status: "Private Repo",
-  },
-  {
-    title: "Legal Case Tracking System",
-    category: "Public Sector (Court of Appeal)",
-    description:
-      "Developed a secure web portal for tracking legal proceedings. Designed to manage sensitive case files and hearing schedules, improving coordination between administrative departments.",
-    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800", // Tswira Abstract dyal Legal Case
-    tags: ["PHP", "SQL", "Security", "Case Management"],
-    status: "Confidential",
-  },
-  {
-    title: "Hopital Molière Longchamp - Equipment Management",
-    category: "Full Stack Medical SaaS",
-    description:
-      "A comprehensive digital platform for the efficient management of medical equipment. Features role-based dashboards for Engineers, Doctors, and Technicians to handle maintenance requests, generate receiving reports (PV), and perform checklist inspections.",
-    image: "/public/home.png", // Ghadi tqad mockup frames wsstha tsawer dyalk w tsmmiha hakka f public/projects/
-    tags: ["React.js", "PHP/Laravel", "MySQL", "UI/UX Design", "Medical IT"],
-    link: "#", // Ila kant 3ndk chi demo link 7ettou hna
-    github: "https://github.com/mouhssine-idbella", // Khli link l'profile dyalk
-    status: "Case Study",
-  },
-];
+import { PROJECTS } from "@/data/projects";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export const Projects = () => {
+  const { ref: hdrRef, isVisible: hdrVisible } = useScrollReveal();
+
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
+      {/* Ambient glow */}
+      <div
+        className="absolute top-0 right-1/4 w-[600px] h-[400px] rounded-full opacity-[0.04] pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, #8b5cf6, transparent 70%)" }}
+        aria-hidden="true"
+      />
+
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mx-auto max-w-3xl mb-16">
-          <span className="text-primary text-sm font-medium tracking-wider uppercase">Portfolio</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6 text-white">
-            Practical <span className="font-serif italic font-normal text-primary text-white">Experience.</span>
+        {/* ─── Section Header ─── */}
+        <div
+          ref={hdrRef}
+          className={`max-w-2xl mx-auto text-center mb-20 reveal-hidden ${hdrVisible ? "reveal-visible" : ""}`}
+        >
+          <span className="section-label mb-4">Portfolio</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mt-4 mb-5 text-foreground leading-tight">
+            Practical{" "}
+            <span className="font-serif italic font-normal gradient-text">
+              Experience.
+            </span>
           </h2>
-          <p className="text-muted-foreground italic">
-            Note: Some enterprise projects are under non-disclosure agreements (NDA); 
-            source code is private to protect company data.
+          <p className="text-muted-foreground text-sm italic leading-relaxed">
+            Several enterprise projects are protected under NDAs. Source code is
+            private — impact metrics and architecture are shared where possible.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10">
-          {projects.map((project, idx) => (
-            <div key={idx} className="group glass rounded-3xl overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500">
-              <div className="relative aspect-video overflow-hidden">
-                <img src={project.image} alt={project.title} className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
-                <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-[10px] text-white font-semibold uppercase tracking-widest">
-                  {project.status}
-                </div>
-              </div>
-
-              <div className="p-8">
-                <p className="text-primary text-xs font-bold mb-2 uppercase tracking-widest">{project.category}</p>
-                <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">{project.description}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tags.map((tag, tIdx) => (
-                    <span key={tIdx} className="text-[10px] px-3 py-1 bg-white/5 rounded-md border border-white/5 text-muted-foreground uppercase font-bold">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex gap-4">
-                  {project.link && (
-                    <a href={project.link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold text-white hover:text-primary transition-colors">
-                      <Eye className="w-4 h-4" /> LIVE PREVIEW
-                    </a>
-                  )}
-                  {project.status === "Private Code" || project.status === "Confidential" ? (
-                    <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground/50 cursor-not-allowed">
-                      <Lock className="w-4 h-4" /> PRIVATE REPO
-                    </span>
-                  ) : (
-                    project.github && (
-                      <a href={project.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold text-white hover:text-primary transition-colors">
-                        <ArrowUpRight className="w-4 h-4" /> GITHUB
-                      </a>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
+        {/* ─── Projects Grid ─── */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {PROJECTS.map((project, idx) => (
+            <ProjectCard key={project.title} project={project} delay={idx * 80} />
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   ProjectCard — looks like a software widget
+───────────────────────────────────────────── */
+const ProjectCard = ({ project, delay }) => {
+  const { ref, isVisible } = useScrollReveal();
+  const isPrivate =
+    project.status === "Private Code" || project.status === "Confidential";
+
+  const statusColor = {
+    "Private Code": { bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.25)", text: "#8b5cf6" },
+    "Private Repo":  { bg: "rgba(96,165,250,0.1)",  border: "rgba(96,165,250,0.25)",  text: "#60a5fa" },
+    "Confidential":  { bg: "rgba(239,68,68,0.08)",  border: "rgba(239,68,68,0.22)",   text: "#f87171" },
+    "Case Study":    { bg: "rgba(242,200,17,0.08)", border: "rgba(242,200,17,0.25)",  text: "#f2c811" },
+    "Live":          { bg: "rgba(45,212,191,0.08)", border: "rgba(45,212,191,0.25)",  text: "#2dd4bf" },
+  };
+  const sc = statusColor[project.status] ?? statusColor["Case Study"];
+
+  return (
+    <article
+      ref={ref}
+      className={`group relative flex flex-col rounded-3xl overflow-hidden card-hover reveal-hidden ${isVisible ? "reveal-visible" : ""}`}
+      style={{
+        transitionDelay: `${delay}ms`,
+        background: "rgba(13,21,37,0.7)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        backdropFilter: "blur(12px)",
+      }}
+    >
+      {/* ── Image Section ── */}
+      <div className="relative aspect-video overflow-hidden">
+        <img
+          src={project.image}
+          alt={`${project.title} project screenshot`}
+          className="w-full h-full object-cover transition-all duration-700 grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105"
+          loading="lazy"
+        />
+        {/* Bottom-to-transparent gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 40%, rgba(13,21,37,0.95) 100%)",
+          }}
+        />
+
+        {/* Status badge */}
+        <div
+          className="absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
+          style={{
+            background: sc.bg,
+            border: `1px solid ${sc.border}`,
+            color: sc.text,
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          {project.status}
+        </div>
+
+        {/* Category tag */}
+        <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-black/50 border border-white/10 text-white/70 backdrop-blur-sm">
+          {project.category}
+        </div>
+      </div>
+
+      {/* ── Content Section ── */}
+      <div className="flex flex-col flex-1 p-7">
+        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+          {project.title}
+        </h3>
+
+        <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+          {project.description}
+        </p>
+
+        {/* Tech Tags */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] px-3 py-1 rounded-md font-bold uppercase tracking-wider transition-all duration-300"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "#64748b",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(45,212,191,0.07)";
+                e.currentTarget.style.border = "1px solid rgba(45,212,191,0.2)";
+                e.currentTarget.style.color = "#2dd4bf";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                e.currentTarget.style.border = "1px solid rgba(255,255,255,0.08)";
+                e.currentTarget.style.color = "#64748b";
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Separator */}
+        <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.06)" }} />
+
+        {/* Actions */}
+        <div className="flex items-center gap-5">
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
+              <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+              Live Preview
+            </a>
+          )}
+          {isPrivate ? (
+            <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground/40 cursor-not-allowed select-none">
+              <Lock className="w-3.5 h-3.5" aria-hidden="true" />
+              Private Repo
+            </span>
+          ) : (
+            project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-200"
+              >
+                <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                GitHub
+              </a>
+            )
+          )}
+
+          {/* Decorative right-aligned tech accent */}
+          <div className="ml-auto">
+            <div
+              className="w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ background: "#2dd4bf", boxShadow: "0 0 8px #2dd4bf" }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Hover — glowing left border accent */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: "linear-gradient(to bottom, #2dd4bf, #8b5cf6)",
+          boxShadow: "0 0 12px rgba(45,212,191,0.5)",
+        }}
+        aria-hidden="true"
+      />
+    </article>
   );
 };

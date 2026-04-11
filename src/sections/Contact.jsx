@@ -1,264 +1,300 @@
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/Button";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import emailjs from "@emailjs/browser";
+import { CONTACT_INFO, SITE_CONFIG } from "@/data/siteConfig";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "idbellamouhssine@gmail.com",
-    href: "mailto:idbellamouhssine@gmail.com",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+212 638 832 959",
-    href: "tel:+212638832959",
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Guelmim, Morocco",
-    href: "#",
-  },
-];
+const MAX_CHARS = 1000;
 
 export const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState({
-    type: null, // 'success' or 'error'
-    message: "",
-  });
+  const [form,     setForm]     = useState({ name: "", email: "", message: "" });
+  const [loading,  setLoading]  = useState(false);
+  const [status,   setStatus]   = useState({ type: null, message: "" });
+
+  const { ref: hdrRef,  isVisible: hdrVisible  } = useScrollReveal();
+  const { ref: formRef, isVisible: formVisible  } = useScrollReveal();
+  const { ref: infoRef, isVisible: infoVisible  } = useScrollReveal();
+
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    if (name === "message" && value.length > MAX_CHARS) return;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setStatus({ type: null, message: "" });
 
-    setIsLoading(true);
-    setSubmitStatus({ type: null, message: "" });
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const serviceId  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const publicKey  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
       if (!serviceId || !templateId || !publicKey) {
-        throw new Error(
-          "EmailJS configuration is missing. Please check your environment variables."
-        );
+        throw new Error("EmailJS environment variables are not configured.");
       }
 
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name, // Mzyan tssmiha from_name 3la 7sab template d EmailJS
-          reply_to: formData.email,
-          message: formData.message,
-        },
-        publicKey
-      );
+      await emailjs.send(serviceId, templateId, {
+        from_name: form.name,
+        reply_to:  form.email,
+        message:   form.message,
+      }, publicKey);
 
-      setSubmitStatus({
-        type: "success",
-        message: "Message sent successfully! I'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) { // Bug fixed here (was err before)
-      console.error("EmailJS error:", error);
-      setSubmitStatus({
+      setStatus({ type: "success", message: "Message sent! I'll get back to you soon." });
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setStatus({
         type: "error",
-        message:
-          error.text || "Failed to send message. Please try again later.",
+        message: err.text || "Failed to send. Please try again or email me directly.",
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
+  };
+
+  const charsLeft = MAX_CHARS - form.message.length;
+
+  /* ── Shared input style ── */
+  const inputCls =
+    "w-full px-4 py-3 rounded-xl text-sm text-foreground placeholder:text-muted-foreground/40 outline-none " +
+    "transition-all duration-300 disabled:opacity-50";
+  const inputStyle = {
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(255,255,255,0.09)",
+  };
+  const inputFocusHandlers = {
+    onFocus: (e) => {
+      e.target.style.border = "1px solid rgba(45,212,191,0.4)";
+      e.target.style.boxShadow = "0 0 0 3px rgba(45,212,191,0.08)";
+    },
+    onBlur: (e) => {
+      e.target.style.border = "1px solid rgba(255,255,255,0.09)";
+      e.target.style.boxShadow = "none";
+    },
   };
 
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-highlight/5 rounded-full blur-3xl" />
-      </div>
+      {/* Ambient blobs */}
+      <div
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full opacity-[0.04] pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, #2dd4bf, transparent 70%)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-[0.04] pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, #f2c811, transparent 70%)" }}
+        aria-hidden="true"
+      />
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-primary text-sm font-medium tracking-wider uppercase animate-fade-in">
-            Get In Touch
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6 animate-fade-in animation-delay-100 text-white">
+        {/* Header */}
+        <div
+          ref={hdrRef}
+          className={`text-center max-w-2xl mx-auto mb-20 reveal-hidden ${hdrVisible ? "reveal-visible" : ""}`}
+        >
+          <span className="section-label">Get In Touch</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mt-5 mb-5 text-foreground leading-tight">
             Let's build{" "}
-            <span className="font-serif italic font-normal text-primary">
+            <span className="font-serif italic font-normal gradient-text">
               something great.
             </span>
           </h2>
-          <p className="text-muted-foreground animate-fade-in animation-delay-200">
-            Have a project in mind or looking for a Full Stack Developer? I'd love to hear about it. Send me a message and let's discuss how we can work together.
+          <p className="text-muted-foreground text-[15px] leading-relaxed">
+            Have a project in mind or a developer position to fill? I'd love to
+            hear from you. Send a message and let's talk.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Form */}
-          <div className="glass p-8 rounded-3xl border border-white/10 hover:border-primary/30 transition-all duration-300 animate-fade-in animation-delay-300">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-2 text-white"
-                >
-                  Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  placeholder="Your name..."
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white/5 rounded-xl border border-white/10 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/50"
-                />
-              </div>
+        <div className="grid lg:grid-cols-5 gap-10 max-w-5xl mx-auto">
+          {/* ── Contact Form (3/5) ── */}
+          <div
+            ref={formRef}
+            className={`lg:col-span-3 reveal-hidden ${formVisible ? "reveal-visible" : ""}`}
+          >
+            <div
+              className="p-8 rounded-3xl"
+              style={{
+                background: "rgba(13,21,37,0.7)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                backdropFilter: "blur(16px)",
+              }}
+            >
+              <form onSubmit={handleSubmit} noValidate aria-label="Contact form" className="space-y-5">
+                {/* Name */}
+                <div>
+                  <label htmlFor="contact-name" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                    Name
+                  </label>
+                  <input
+                    id="contact-name" name="name" type="text" required minLength={2}
+                    placeholder="Your full name"
+                    value={form.name} onChange={handleChange} disabled={loading}
+                    className={inputCls} style={inputStyle}
+                    {...inputFocusHandlers}
+                  />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium mb-2 text-white"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="your@email.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white/5 rounded-xl border border-white/10 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/50"
-                />
-              </div>
+                {/* Email */}
+                <div>
+                  <label htmlFor="contact-email" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                    Email
+                  </label>
+                  <input
+                    id="contact-email" name="email" type="email" required
+                    placeholder="your@email.com"
+                    value={form.email} onChange={handleChange} disabled={loading}
+                    className={inputCls} style={inputStyle}
+                    {...inputFocusHandlers}
+                  />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium mb-2 text-white"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  required
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  placeholder="Your message..."
-                  className="w-full px-4 py-3 bg-white/5 rounded-xl border border-white/10 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none placeholder:text-muted-foreground/50"
-                />
-              </div>
+                {/* Message */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="contact-message" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Message
+                    </label>
+                    <span
+                      className="text-[11px] tabular-nums font-medium transition-colors"
+                      aria-live="polite"
+                      style={{ color: charsLeft < 100 ? "#f2c811" : "#64748b" }}
+                    >
+                      {charsLeft}/{MAX_CHARS}
+                    </span>
+                  </div>
+                  <textarea
+                    id="contact-message" name="message" rows={5} required minLength={20}
+                    placeholder="Tell me about your project or opportunity..."
+                    value={form.message} onChange={handleChange} disabled={loading}
+                    className={`${inputCls} resize-none`} style={inputStyle}
+                    {...inputFocusHandlers}
+                  />
+                </div>
 
-              <div className="pt-2">
-                {submitStatus.type && (
+                {/* Status alert */}
+                {status.type && (
                   <div
-                    className={`flex items-center gap-3 p-4 rounded-xl mb-4 ${
-                      submitStatus.type === "success"
-                        ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                        : "bg-red-500/10 border border-red-500/20 text-red-400"
-                    }`}
+                    role="alert"
+                    className="flex items-start gap-3 p-4 rounded-xl text-sm"
+                    style={{
+                      background: status.type === "success"
+                        ? "rgba(45,212,191,0.08)"
+                        : "rgba(239,68,68,0.08)",
+                      border: status.type === "success"
+                        ? "1px solid rgba(45,212,191,0.25)"
+                        : "1px solid rgba(239,68,68,0.25)",
+                      color: status.type === "success" ? "#2dd4bf" : "#f87171",
+                    }}
                   >
-                    {submitStatus.type === "success" ? (
-                      <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                    )}
-                    <p className="text-sm">{submitStatus.message}</p>
+                    {status.type === "success"
+                      ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-px" aria-hidden="true" />
+                      : <AlertCircle className="w-4 h-4 flex-shrink-0 mt-px" aria-hidden="true" />
+                    }
+                    <p>{status.message}</p>
                   </div>
                 )}
 
-                <Button
-                  className="w-full relative overflow-hidden group"
-                  type="submit"
-                  size="lg"
-                  disabled={isLoading}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {isLoading ? (
-                      <>Sending...</>
-                    ) : (
-                      <>
-                        Send Message
-                        <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </>
-                    )}
-                  </span>
+                {/* Submit */}
+                <Button type="submit" size="lg" className="w-full" disabled={loading} aria-busy={loading}>
+                  {loading ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" aria-hidden="true" />
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                    </>
+                  )}
                 </Button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-6 animate-fade-in animation-delay-400">
-            <div className="glass rounded-3xl p-8 border border-white/10">
-              <h3 className="text-xl font-semibold mb-6 text-white">
-                Contact Information
-              </h3>
-              <div className="space-y-4">
-                {contactInfo.map((item, i) => (
-                  <a
-                    key={i}
-                    href={item.href}
-                    className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <item.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground font-medium">
-                        {item.label}
-                      </div>
-                      <div className="font-medium text-white tracking-wide">
-                        {item.value}
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Availability Card */}
-            <div className="glass rounded-3xl p-8 border border-primary/30 relative overflow-hidden group hover:border-primary/60 transition-colors">
-              <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                  </span>
-                  <span className="font-semibold text-white tracking-wide">Currently Available</span>
+          {/* ── Info Column (2/5) ── */}
+          <div
+            ref={infoRef}
+            className={`lg:col-span-2 flex flex-col gap-5 reveal-hidden ${infoVisible ? "reveal-visible" : ""}`}
+            style={{ transitionDelay: "120ms" }}
+          >
+            {/* Contact items */}
+            {CONTACT_INFO.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 group"
+                style={{
+                  background: "rgba(13,21,37,0.7)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  backdropFilter: "blur(12px)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.border = "1px solid rgba(45,212,191,0.22)";
+                  e.currentTarget.style.transform = "translateX(4px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.border = "1px solid rgba(255,255,255,0.07)";
+                  e.currentTarget.style.transform = "translateX(0)";
+                }}
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
+                  style={{
+                    background: "rgba(45,212,191,0.1)",
+                    border: "1px solid rgba(45,212,191,0.18)",
+                  }}
+                >
+                  <item.icon className="w-4 h-4 text-primary" aria-hidden="true" />
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  I'm currently open to new opportunities. 
-                  Whether you need a full-time Full Stack Developer or a dedicated professional for an upcoming project, 
-                  let's connect!
+                <div>
+                  <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mb-0.5">
+                    {item.label}
+                  </div>
+                  <div className="text-sm font-semibold text-foreground">
+                    {item.value}
+                  </div>
+                </div>
+              </a>
+            ))}
+
+            {/* Availability card */}
+            <div
+              className="relative p-6 rounded-2xl overflow-hidden group flex-1 flex flex-col justify-center"
+              style={{
+                background: "rgba(13,21,37,0.7)",
+                border: "1px solid rgba(45,212,191,0.2)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
+              <div
+                className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity"
+                style={{ background: "radial-gradient(circle at 50% 0%, #2dd4bf, transparent 70%)" }}
+                aria-hidden="true"
+              />
+              <div className="relative z-10 space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-70" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                  </span>
+                  <span className="text-sm font-bold text-foreground">Currently Available</span>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Open to full-time positions, freelance projects, and consulting
+                  opportunities in Full Stack or Power Platform development.
                 </p>
+                <a
+                  href={`mailto:${SITE_CONFIG.email}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <Mail className="w-3.5 h-3.5" aria-hidden="true" />
+                  {SITE_CONFIG.email}
+                </a>
               </div>
             </div>
           </div>
